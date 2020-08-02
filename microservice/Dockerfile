@@ -16,5 +16,4 @@ ENV PATH="$PATH:$JAVA_HOME/bin"
 COPY --from=packager "$JAVA_HOME" "$JAVA_HOME"
 VOLUME /tmp
 ADD target/microservice-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8090
 CMD ["java", "-jar", "microservice-0.0.1-SNAPSHOT.jar"]
