@@ -1,7 +1,6 @@
 FROM alpine:latest as packager
 RUN apk --no-cache add openjdk11-jdk openjdk11-jmods
 ENV JAVA_MINIMAL="/opt/java-minimal"
-
 # build minimal JRE
 RUN /usr/lib/jvm/java-11-openjdk/bin/jlink \
    --verbose \
@@ -14,6 +13,5 @@ FROM alpine:latest
 ENV JAVA_HOME=/opt/java-minimal
 ENV PATH="$PATH:$JAVA_HOME/bin"
 COPY --from=packager "$JAVA_HOME" "$JAVA_HOME"
-VOLUME /tmp
 ADD target/microservice-0.0.1-SNAPSHOT.jar app.jar
 CMD ["java", "-jar", "microservice-0.0.1-SNAPSHOT.jar"]
