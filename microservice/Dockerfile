@@ -1,19 +1,6 @@
-#De la imagen que partimos
-FROM openjdk:8-jre-alpine
-
-RUN apk add --no-cache tzdata
-ENV TZ='America/Lima'
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apk --update add fontconfig ttf-dejavu
-
-#Directorio de trabajo
-WORKDIR /
-RUN mkdir app && chmod 777 app
-COPY target/microservice-0.0.1-SNAPSHOT.jar /app
-WORKDIR /app
-
-#Exponemos el puerto 8080
-EXPOSE 8090
-
-#Comando que se ejecutarÃ¡ una vez ejecutemos el contendor
-CMD ["java","-jar","microservice-0.0.1-SNAPSHOT.jar"]
+FROM centos
+RUN yum install -y java
+VOLUME /tmp
+ADD target/microservice-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c 'touch /app.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
